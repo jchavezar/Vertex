@@ -12,6 +12,7 @@ You can:
 4. Mix between 1.+3. or 2.+3.
 
 ## Data Type
+
 ---
 
 - json format
