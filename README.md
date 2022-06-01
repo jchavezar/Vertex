@@ -75,7 +75,7 @@ print(tf.__version__)
 BUCKET = '$BUCKET'
 
 # Extraction process
-dataset = pd.read_csv('https://storage.googleapis.com/jchavezar-public-datasets/auto-mpg.csv'')
+dataset = pd.read_csv('https://storage.googleapis.com/jchavezar-public-datasets/auto-mpg.csv')
 dataset.tail()
 
 dataset.isna().sum()
