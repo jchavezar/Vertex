@@ -25,7 +25,9 @@ Set your variables:
 
 ```
 REGION = [your_region]
+PROJECT_ID = [your_project]
 BUCKET = [your_bucket]
+USERNAME = [linux_unix_username]
 ```
 
 Build a webserver docker container to handle predictions; uvicorn
@@ -92,16 +94,16 @@ async def predict(request: Request):
 EOF
 ```
 
-Create a new repository in Google Cloud Platform to store containers. **(Remember to change `[YOUR_REGION]`)**
+Create a new repository in Google Cloud Platform to store containers.
 
 ```
-$gcloud artifacts repositories create repo-models --repository-format=docker \
---location=[YOUR_REGION] --description="Models repository"
+gcloud artifacts repositories create repo-models --repository-format=docker \
+--location=$REGION --description="Models repository"
 ```
 
-Tag container in Artifacts repository format: **(Remember to change `[YOUR_REGION]` and `[YOUR_PROJECT]`)**
+Tag container in Artifacts repository format:
 ```
-$docker build -t [YOUR_REGION]-docker.pkg.dev/['YOUR_PROJECT']/repo-models/container_model_test .
+docker build -t $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test .
 ```
 
 The easiest and secured way to handle GCP credentials is by using the Application Default Credentials, you have to login to get a temporary credentials:
@@ -110,18 +112,18 @@ The easiest and secured way to handle GCP credentials is by using the Applicatio
 $gcloud auth application-default login
 ```
 
-This will generate a json config file with temporary credentials under: ~/.config/gcloud/, the container has to be able to mount that file through docker volumes, so let's define a variable that will be used when you run the container: **(Remember to change the `[USERNAME]`)**
+This will generate a json config file with temporary credentials under: ~/.config/gcloud/, the container has to be able to mount that file through docker volumes, so let's define a variable that will be used when you run the container:
 
 ```
-$ADC=/home/[USERNAME]/.config/gcloud/application_default_credentials.json
+ADC=/home/$USERNAME/.config/gcloud/application_default_credentials.json
 ```
 
-Run the container locally **(Remember to change `[YOUR_REGION]`)**:
+Run the container locally:
 ```
-$docker run --name predict \
+docker run --name predict \
   -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/FILE_NAME.json \
   -v ${ADC}:/tmp/keys/FILE_NAME.json \
-  -p 732:8080 [YOUR_REGION]-docker.pkg.dev/[YOUR_PROJECT]/repo-models/container_model_test
+  -p 732:8080 $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test
 ```
 
 You can break it down with Ctrl+C.
