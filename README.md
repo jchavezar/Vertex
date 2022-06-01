@@ -24,10 +24,10 @@ You can:
 Set your variables:
 
 ```
-REGION = [your_region]
-PROJECT_ID = [your_project]
-BUCKET = [your_bucket]
-USERNAME = [linux_unix_username]
+REGION=[your_region]
+PROJECT_ID=[your_project]
+BUCKET=[your_bucket]
+USERNAME=[linux_unix_username]
 ```
 
 Build a webserver docker container to handle predictions; uvicorn
