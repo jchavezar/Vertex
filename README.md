@@ -139,7 +139,7 @@ early_history = model.fit(normed_train_data, train_labels,
 
 # Export model and save to GCS
 print(BUCKET)
-model.save(BUCKET + '/mpg/model')
+model.save(BUCKET)
 EOF
 ```
 
@@ -247,7 +247,7 @@ docker build -t $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_t
 ### Run the container locally:
 ```
 docker run --name predict \
-  -e GOOGLE_APPLIcatION_CREDENTIALS=/tmp/keys/FILE_NAME.json \
+  -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/FILE_NAME.json \
   -v ${ADC}:/tmp/keys/FILE_NAME.json \
   -p 732:8080 $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test
 ```
