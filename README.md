@@ -149,6 +149,16 @@ docker run -ti --name train -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/temp.json -v 
 
 ## Step 2: Building code, container and test them locally.
 
+Preparing stage:
+
+```
+cat ..
+if [ ! -d prediction ]; then
+   mkdir prediction;
+fi
+cd prediction
+```
+
 Build a webserver docker container to handle predictions; uvicorn
 
 ```
