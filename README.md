@@ -21,10 +21,17 @@ You can:
 
 ## Step 1: Building code, container and test them locally.
 
+Set your variables:
+
+```
+REGION = [your_region]
+BUCKET = [your_bucket]
+```
+
 Build a webserver docker container to handle predictions; uvicorn
 
-Dockerfile
 ```
+CAT << EOF > Dockerfile
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
 
 COPY app /app
@@ -33,13 +40,19 @@ RUN pip install sklearn joblib pandas tensorflow
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
 
 EXPOSE 8080
+EOF
 ```
 
 Create code (logic) behind the webserver
 
-app/main.py
+```
+if [ ! -d app ]; then
+   mkdir app;
+fi
+```
 
 ```
+CAT << EOF > app/main.py
 from fastapi import Request, FastAPI
 from tensorflow import keras
 import json
@@ -47,7 +60,7 @@ import os
 
 app = FastAPI()
 BUCKET = 'gs://vertexlooker-models-central/mpg/model'
-model = keras.models.load_model(BUCKET)
+model = keras.models.load_model($BUCKET)
 
 
 @app.get('/')
@@ -76,7 +89,7 @@ async def predict(request: Request):
     print("----------------- OUTPUTS -----------------")
 
     return {"predictions": response}
-
+EOF
 ```
 
 Create a new repository in Google Cloud Platform to store containers. **(Remember to change `[YOUR_REGION]`)**
