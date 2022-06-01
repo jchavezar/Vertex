@@ -153,6 +153,9 @@ Preparing stage:
 
 ```
 cat ..
+```
+
+```
 if [ ! -d prediction ]; then
    mkdir prediction;
 fi
