@@ -103,7 +103,7 @@ This will generate a json config file with temporary credentials under: ~/.confi
 $ADC=/home/[USERNAME]/.config/gcloud/application_default_credentials.json
 ```
 
-Run the container locally *(Remember to change `[YOUR_REGION]`)**:
+Run the container locally **(Remember to change `[YOUR_REGION]`)**:
 ```
 $docker run --name predict \
   -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/FILE_NAME.json \
