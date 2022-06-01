@@ -15,7 +15,10 @@ You can:
 
 ---
 
-- json format
+- dasfasdfasdfasdfsd
+- asdfasdfasdf
+- asdfasdfasdf
+
 
 
 > Before you do that, **DO update the md5_key in .env file to `guess_what`** so that former users will not lose their count, otherwise the count will start from 1.
