@@ -152,10 +152,7 @@ docker run -ti --name train -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/temp.json -v 
 Preparing stage:
 
 ```
-cat ..
-```
-
-```
+cd ..
 if [ ! -d prediction ]; then
    mkdir prediction;
 fi
