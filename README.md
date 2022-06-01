@@ -200,8 +200,7 @@ import json
 import os
 
 app = FastAPI()
-BUCKET = 'gs://vertexlooker-models-central/mpg/model'
-model = keras.models.load_model($BUCKET)
+model = keras.models.load_model('$BUCKET')
 
 
 @app.get('/')
