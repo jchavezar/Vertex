@@ -145,6 +145,8 @@ docker run -ti --name train -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/temp.json -v 
 
 ---
 
+** Your code has finised the training and store the model under $BUCKET value.
+
 ## Step 2: Building code, container and test them locally.
 
 Build a webserver docker container to handle predictions; uvicorn
