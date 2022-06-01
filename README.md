@@ -28,6 +28,7 @@ REGION=[your_region]
 PROJECT_ID=[your_project]
 BUCKET=[your_bucket]
 USERNAME=[linux_unix_username]
+ADC=/home/$USERNAME/.config/gcloud/application_default_credentials.json
 ```
 
 ```
@@ -139,7 +140,7 @@ docker build -t train .
 ```
 
 ```
-docker run -ti train
+docker run -ti --name train -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/temp.json -v ${ADC}:/tmp/temp.json train
 ```
 
 ---
