@@ -21,7 +21,7 @@ You can:
 
 ## Step 1: Building code and container and locally testing.
 
-Build a docker container with a webserver for predictions; uvicorn
+Build a webserver docker container to handle predictions; uvicorn
 
 Dockerfile
 ```
@@ -34,3 +34,99 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
 
 EXPOSE 8080
 ```
+
+Create code (logic) behind the webserver
+
+app/main.py
+
+```
+from fastapi import Request, FastAPI
+from tensorflow import keras
+import json
+import os
+
+app = FastAPI()
+BUCKET = 'gs://vertexlooker-models-central/mpg/model'
+model = keras.models.load_model(BUCKET)
+
+
+@app.get('/')
+def get_root():
+    return {'message': 'Welcome to the spam detection API: miles per gallon prediction'}
+
+
+@app.get('/health_check')
+def health():
+    return 200
+
+
+if os.environ.get('AIP_PREDICT_ROUTE') is not None:
+    method = os.environ['AIP_PREDICT_ROUTE']
+else:
+    method = '/predict'
+
+
+@app.post(method)
+async def predict(request: Request):
+    print("----------------- PREDICTING -----------------")
+    body = await request.json()
+    instances = body["instances"]
+    outputs = model.predict(instances)
+    response = outputs.tolist()
+    print("----------------- OUTPUTS -----------------")
+
+    return {"predictions": response}
+
+```
+
+Create a new repository in Google Cloud Platform to store containers. (Remember to change your region)
+
+```
+$gcloud artifacts repositories create repo-models --repository-format=docker \
+--location=[YOUR_REGION] --description="Models repository"
+```
+
+Tag container in Artifacts repository format: (Remember to chnage region and project)
+```
+$docker build -t [YOUR_REGION]-docker.pkg.dev/['YOUR_PROJECT']/repo-models/container_model_test .
+```
+
+The easiest and secured way to handle GCP credentials is by using the Application Default Credentials, you have to login to get a temporary credentials:
+
+```
+$gcloud auth application-default login
+```
+
+This will generate a json config file with temporary credentials under: ~/.config/gcloud/, the container has to be able to mount that file through docker volumes, so let's define a variable that will be used when you run the container:
+
+```
+$ADC=/home/jesusarguelles/.config/gcloud/application_default_credentials.json
+```
+
+Test the container locally:
+```
+$docker run --name predict \
+  -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/FILE_NAME.json \
+  -v ${ADC}:/tmp/keys/FILE_NAME.json \
+  -p 732:8080 [YOUR_REGION]-docker.pkg.dev/[YOUR_PROJECT]/repo-models/container_model_test
+```
+
+You can break it down with Ctrl+C.
+
+For predictions, open a new terminal an make an http request with the data in json format:
+
+```
+curl -X POST -H "Content-Type: application/json" http://localhost:732/predict -d '{
+ "instances": [[1.4838871833555929,
+ 1.8659883497083019,
+ 2.234620276849616,
+ 1.0187816540094903,
+ -2.530890710602246,
+ -1.6046416850441676,
+ -0.4651483719733302,
+ -0.4952254087173721,
+ 0.7746763768735953]]
+}'
+```
+
+
