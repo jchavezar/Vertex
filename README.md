@@ -19,6 +19,16 @@ You can:
 
 ## Authentication
 
+
+The easiest and secured way to handle GCP credentials is by using the Application Default Credentials, you have to login to get a temporary credentials:
+
+```
+gcloud auth application-default login
+```
+
+This will generate a json config file with temporary credentials under: ~/.config/gcloud/, the container has to be able to mount that file through docker volumes, so let's define a variable that will be used when you run the container:
+
+
 ## Step 1: Building training code, container and run it locally.
 
 Set your variables:
@@ -149,7 +159,7 @@ docker run -ti --name train -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/temp.json -v 
 
 ## Step 2: Building code, container and test them locally.
 
-Preparing stage:
+### Preparing stage:
 
 ```
 cd ..
@@ -159,7 +169,7 @@ fi
 cd prediction
 ```
 
-Build a webserver docker container to handle predictions; uvicorn
+### Build a webserver docker container to handle predictions; uvicorn
 
 ```
 cat << EOF > Dockerfile
@@ -174,7 +184,7 @@ EXPOSE 8080
 EOF
 ```
 
-Create code (logic) behind the webserver
+### Create code (logic) behind the webserver
 
 ```
 if [ ! -d app ]; then
@@ -223,31 +233,19 @@ async def predict(request: Request):
 EOF
 ```
 
-Create a new repository in Google Cloud Platform to store containers.
+### Create a new repository in Google Cloud Platform to store containers.
 
 ```
 gcloud artifacts repositories create repo-models --repository-format=docker \
 --location=$REGION --description="Models repository"
 ```
 
-Tag container in Artifacts repository format:
+### Tag container in Artifacts repository format:
 ```
 docker build -t $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test .
 ```
 
-The easiest and secured way to handle GCP credentials is by using the Application Default Credentials, you have to login to get a temporary credentials:
-
-```
-$gcloud auth application-default login
-```
-
-This will generate a json config file with temporary credentials under: ~/.config/gcloud/, the container has to be able to mount that file through docker volumes, so let's define a variable that will be used when you run the container:
-
-```
-ADC=/home/$USERNAME/.config/gcloud/application_default_credentials.json
-```
-
-Run the container locally:
+### Run the container locally:
 ```
 docker run --name predict \
   -e GOOGLE_APPLIcatION_CREDENTIALS=/tmp/keys/FILE_NAME.json \
