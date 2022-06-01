@@ -40,7 +40,7 @@ cd train
 ### Create docker file (DockerFile):
 
 ```
-CAT << EOF > Dockerfile
+cat << EOF > Dockerfile
 FROM gcr.io/deeplearning-platform-release/tf2-cpu.2-6
 WORKDIR /
 
@@ -60,7 +60,7 @@ fi
 ```
 
 ```
-CAT << EOF > trainer/train.py
+cat << EOF > trainer/train.py
 import warnings
 import pandas as pd
 import tensorflow as tf
@@ -149,7 +149,7 @@ docker run -ti train
 Build a webserver docker container to handle predictions; uvicorn
 
 ```
-CAT << EOF > Dockerfile
+cat << EOF > Dockerfile
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
 
 COPY app /app
@@ -170,7 +170,7 @@ fi
 ```
 
 ```
-CAT << EOF > app/main.py
+cat << EOF > app/main.py
 from fastapi import Request, FastAPI
 from tensorflow import keras
 import json
@@ -237,7 +237,7 @@ ADC=/home/$USERNAME/.config/gcloud/application_default_credentials.json
 Run the container locally:
 ```
 docker run --name predict \
-  -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/FILE_NAME.json \
+  -e GOOGLE_APPLIcatION_CREDENTIALS=/tmp/keys/FILE_NAME.json \
   -v ${ADC}:/tmp/keys/FILE_NAME.json \
   -p 732:8080 $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test
 ```
