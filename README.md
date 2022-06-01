@@ -1,16 +1,21 @@
-# visitor-badge
+# Vertex AI Custom Container Deployment
 
-**The service is now deployed under a free version of glitch, so it will down if too many requests in the same time**
+**Snippets for Google Vertex AI!**
+
+---
 
 You can:
 
-1. fork this project and deploy under your glitch account and let it working for yourself, it should be enough.
-2. use [hits](https://github.com/dwyl/hits) instead
-3. consider a donation :-)
+1. Use your own laptop to test it locally.
+2. User any flavor of Vertex Workbench [here](https://console.cloud.google.com/vertex-ai/workbench).
+3. Upload and deploy it on Vertex Endpoints [here](https://console.cloud.google.com/vertex-ai/endpoints).
+4. Mix between 1.+3. or 2.+3.
 
-Sorry for the inconvenience.
+## Data Type
+---
 
-If you deployed forked project to your stable server and want to provide a free, stable service, which is very kind, please raise an issue to tell me so I can list your service url here:
+- json format
+
 
 > Before you do that, **DO update the md5_key in .env file to `guess_what`** so that former users will not lose their count, otherwise the count will start from 1.
 
