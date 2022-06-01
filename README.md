@@ -19,7 +19,7 @@ You can:
 
 ## Authentication
 
-## Step 1: Building code and container and locally testing.
+## Step 1: Building code, container and test them locally.
 
 Build a webserver docker container to handle predictions; uvicorn
 
