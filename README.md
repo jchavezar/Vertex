@@ -79,14 +79,14 @@ async def predict(request: Request):
 
 ```
 
-Create a new repository in Google Cloud Platform to store containers. (Remember to change your region)
+Create a new repository in Google Cloud Platform to store containers. (Remember to change `[YOUR_REGION]`)
 
 ```
 $gcloud artifacts repositories create repo-models --repository-format=docker \
 --location=[YOUR_REGION] --description="Models repository"
 ```
 
-Tag container in Artifacts repository format: (Remember to chnage region and project)
+Tag container in Artifacts repository format: (Remember to change `[YOUR_REGION]` and `[YOUR_PROJECT]`)
 ```
 $docker build -t [YOUR_REGION]-docker.pkg.dev/['YOUR_PROJECT']/repo-models/container_model_test .
 ```
@@ -97,10 +97,10 @@ The easiest and secured way to handle GCP credentials is by using the Applicatio
 $gcloud auth application-default login
 ```
 
-This will generate a json config file with temporary credentials under: ~/.config/gcloud/, the container has to be able to mount that file through docker volumes, so let's define a variable that will be used when you run the container:
+This will generate a json config file with temporary credentials under: ~/.config/gcloud/, the container has to be able to mount that file through docker volumes, so let's define a variable that will be used when you run the container: **(Remember to change the `[USERNAME]`)*
 
 ```
-$ADC=/home/jesusarguelles/.config/gcloud/application_default_credentials.json
+$ADC=/home/[USERNAME]/.config/gcloud/application_default_credentials.json
 ```
 
 Test the container locally:
