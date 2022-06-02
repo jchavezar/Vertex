@@ -168,7 +168,7 @@ EOF
 pip install setuptools
 python setup.py install
 python setup.py sdist
-gsutil cp dist/trainer-01.tar.gz $BUCKET_NAME/trainer-0.1.tar.gz
+gsutil cp dist/trainer-0.1.tar.gz $BUCKET_NAME/trainer-0.1.tar.gz
 ```
 
 ## Step 2: Train in Vertex Training
