@@ -51,13 +51,13 @@ ADC=/home/$USERNAME/.config/gcloud/application_default_credentials.json
 
 ### Create your bucket:
 
-```
+```ruby
 gsutil mb -l $REGION $BUCKET
 ```
 
 ### Create the folder structure:
 
-```
+```ruby
 if [ ! -d train ]; then
    mkdir train;
 fi
@@ -66,7 +66,7 @@ cd train
 
 ### Create docker file (DockerFile):
 
-```
+```Dockerfile
 cat << EOF > Dockerfile
 FROM gcr.io/deeplearning-platform-release/tf2-cpu.2-6
 WORKDIR /
@@ -81,13 +81,13 @@ EOF
 
 ### Create code for training (train.py):
 
-```
+```ruby
 if [ ! -d trainer ]; then
    mkdir trainer;
 fi
 ```
 
-```
+```Python
 cat << EOF > trainer/train.py
 import warnings
 import pandas as pd
@@ -162,11 +162,11 @@ EOF
 
 ### Build model and run it:
 
-```
+```ruby
 docker build -t train .
 ```
 
-```
+```ruby
 docker run -ti --name train -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/temp.json -v ${ADC}:/tmp/temp.json train
 ```
 
@@ -179,7 +179,7 @@ docker run -ti --name train -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/temp.json -v 
 
 ### Preparing stage:
 
-```
+```ruby
 cd ..
 if [ ! -d prediction ]; then
    mkdir prediction;
@@ -204,14 +204,14 @@ EOF
 
 ### Create code (logic) behind the webserver
 
-```
+```ruby
 if [ ! -d app ]; then
    mkdir app;
 fi
 
 ```
 
-```
+```Python
 cat << EOF > app/main.py
 from fastapi import Request, FastAPI
 from tensorflow import keras
@@ -260,18 +260,18 @@ EOF
 
 ### Create a new repository in Google Cloud Platform to store containers.
 
-```
+```ruby
 gcloud artifacts repositories create repo-models --repository-format=docker \
 --location=$REGION --description="Models repository"
 ```
 
 ### Tag container in Artifacts repository format:
-```
+```ruby
 docker build -t $IMAGE_URI .
 ```
 
 ### Run the container locally:
-```
+```ruby
 docker run --name predict \
   -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/FILE_NAME.json \
   -v ${ADC}:/tmp/keys/FILE_NAME.json \
@@ -282,7 +282,7 @@ You can break it down with Ctrl+C.
 
 For predictions, open a new terminal an make an http request with the data in json format:
 
-```
+```ruby
 curl -X POST -H "Content-Type: application/json" http://localhost:732/predict -d '{
  "instances": [[1.4838871833555929,
  1.8659883497083019,
@@ -321,7 +321,7 @@ MACHINE_TYPE=n1-standard-2
 
 ### Upload Model
 
-```
+```ruby
 gcloud ai models upload \
   --region=$REGION \
   --display-name=$MODEL_NAME \
@@ -333,7 +333,7 @@ gcloud ai models upload \
 
 ### Create Endpoint
 
-```
+```ruby
 gcloud ai endpoints create \
   --display-name=$ENDPOINT_NAME \
   --region=$REGION
@@ -357,7 +357,7 @@ ENDPOINT_ID=$(gcloud ai endpoints list \
 
 ### Deploy Endpoint
 
-```Shell
+```ruby
 gcloud ai endpoints deploy-model $ENDPOINT_ID\
   --region=$REGION \
   --model=$MODEL_ID \
