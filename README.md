@@ -18,14 +18,14 @@ You can:
 
 ## Authentication
 
-
-The easiest and secured way to handle GCP credentials is by using the Application Default Credentials, you have to login to get a temporary credentials:
-
+Create temporary [Application Default Credentials](https://cloud.google.com/docs/authentication/production#:~:text=a%20library%20called-,Application%20Default%20Credentials%20(ADC),-to%20automatically%20find).
 ```
 gcloud auth application-default login
 ```
-
-This will generate a json config file with temporary credentials under: ~/.config/gcloud/, the container has to be able to mount that file through docker volumes, so let's define a variable that will be used when you run the container:
+<details>
+    <summary>"Click to expand (notes)"</summary>
+This will generate a json config file with temporary credentials under: ~/.config/gcloud/, the container has to be able to mount that file through docker volumes, that's why we will define a variable called ADC.
+</details>
 
 
 ## Step 1: Building training code, container and run it locally.
