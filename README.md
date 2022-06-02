@@ -43,7 +43,9 @@ This will generate a json config file with temporary credentials under: ~/.confi
 REGION=[your_region]
 PROJECT_ID=[your_project]
 BUCKET=[your_bucket]
+BUCKET_FOLDER_ARTIFACTS=$BUCKET/[your_folder]
 USERNAME=[linux_unix_username]
+IMAGE_URI=$REGION-docker.pkg.dev/$PROJECT_ID/repo-models/[container_image_name]
 ADC=/home/$USERNAME/.config/gcloud/application_default_credentials.json
 ```
 
@@ -98,7 +100,7 @@ from tensorflow.keras import layers
 
 print(tf.__version__)
 
-BUCKET = '$BUCKET'
+BUCKET = '$BUCKET_FOLDER_ARTIFACTS'
 
 # Extraction process
 dataset = pd.read_csv('https://storage.googleapis.com/jchavezar-public-datasets/auto-mpg.csv')
@@ -170,7 +172,7 @@ docker run -ti --name train -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/temp.json -v 
 
 ---
 
-** Your code has finised the training and store the model under $BUCKET value.
+** Your code has finised the training and store the model under $BUCKET_FOLDER_ARTIFACTS value.
 
 ## Step 2: Building code, container and test them locally.
 
@@ -264,7 +266,7 @@ gcloud artifacts repositories create repo-models --repository-format=docker \
 
 ### Tag container in Artifacts repository format:
 ```
-docker build -t $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test .
+docker build -t $IMAGE_URI .
 ```
 
 ### Run the container locally:
@@ -272,7 +274,7 @@ docker build -t $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_t
 docker run --name predict \
   -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/FILE_NAME.json \
   -v ${ADC}:/tmp/keys/FILE_NAME.json \
-  -p 732:8080 $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test
+  -p 732:8080 $IMAGE_URI
 ```
 
 You can break it down with Ctrl+C.
@@ -296,7 +298,7 @@ curl -X POST -H "Content-Type: application/json" http://localhost:732/predict -d
 ### Push image to Google Cloud Artifacts Repository
 
 ```
-docker push $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test
+docker push $IMAGE_URI
 ```
 
 ---
@@ -312,7 +314,6 @@ docker push $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test
 ```
 ENDPOINT_NAME=[your_endpoint_name]
 MODEL_NAME=[your_model_name]
-IMAGE_URI=$REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test
 DEPLOYED_MODEL_NAME=[your_deployed_model_name]
 MACHINE_TYPE=n1-standard-2
 ```
@@ -324,7 +325,7 @@ gcloud ai models upload \
   --region=$REGION \
   --display-name=$MODEL_NAME \
   --container-image-uri=$IMAGE_URI \
-  --artifact-uri=$BUCKET
+  --artifact-uri=$BUCKET_FOLDER_ARTIFACTS
 ```
 
 ### Create Endpoint
