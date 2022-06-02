@@ -189,7 +189,7 @@ cd prediction
 
 ### Build a webserver docker container to handle predictions; uvicorn
 
-```
+```Dockerfile
 cat << EOF > Dockerfile
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
 
