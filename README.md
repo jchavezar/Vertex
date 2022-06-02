@@ -357,7 +357,7 @@ ENDPOINT_ID=$(gcloud ai endpoints list \
 
 ### Deploy Endpoint
 
-```
+```shell
 gcloud ai endpoints deploy-model $ENDPOINT_ID\
   --region=$REGION \
   --model=$MODEL_ID \
