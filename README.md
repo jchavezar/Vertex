@@ -172,7 +172,7 @@ docker run -ti --name train -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/temp.json -v 
 
 ---
 
-** Your code has finised the training and store the model under $BUCKET_FOLDER_ARTIFACTS value.
+** Your training has finished and model has been stored in $BUCKET_FOLDER_ARTIFACTS.
 
 ## Step 2: Building code, container and test them locally.
 
