@@ -290,8 +290,8 @@ ENDPOINT_NAME=[your_endpoint_name]
 ### Create Endpoint
 
 ```
-gcloud ai endpoints create 
-  --display-name=$ENDPOINT_NAME
+gcloud ai endpoints create \
+  --display-name=$ENDPOINT_NAME \
   --region=$REGION
 ```
 
