@@ -39,13 +39,13 @@ This will generate a json config file with temporary credentials under: ~/.confi
 
 ### Set your variables:
 
-```
-REGION=[your_region]
-PROJECT_ID=[your_project]
-BUCKET=[your_bucket]
-BUCKET_FOLDER_ARTIFACTS=$BUCKET/[your_folder]
-USERNAME=[linux_unix_username]
-IMAGE_URI=$REGION-docker.pkg.dev/$PROJECT_ID/repo-models/[container_image_name]
+```shell
+REGION="string"                                                                   # No spaces around the operator
+PROJECT_ID="string"                                                               # Project id syntaxis
+BUCKET="string"                                                                   # Bucket id in the following format: gs://NAME
+BUCKET_FOLDER_ARTIFACTS=$BUCKET/"string"                                          # Folders name
+USERNAME="string"                                                                 # Container image name 
+IMAGE_URI=$REGION-docker.pkg.dev/$PROJECT_ID/repo-models/"string"                 
 ADC=/home/$USERNAME/.config/gcloud/application_default_credentials.json
 ```
 
@@ -312,11 +312,11 @@ docker push $IMAGE_URI
 
 ### Define Variables
 
-```
-ENDPOINT_NAME=[your_endpoint_name]
-MODEL_NAME=[your_model_name]
-DEPLOYED_MODEL_NAME=[your_deployed_model_name]
-MACHINE_TYPE=n1-standard-2
+```shell
+ENDPOINT_NAME="string"               # Endpoint's name
+MODEL_NAME="string"                  # Model's name
+DEPLOYED_MODEL_NAME="string"         # Deployed model's name
+MACHINE_TYPE=n1-standard-2           # Machine type
 ```
 
 ### Upload Model
