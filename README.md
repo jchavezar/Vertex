@@ -205,9 +205,9 @@ app = FastAPI()
 if os.environ.get('AIP_STORAGE_URI') is not None:
     BUCKET = os.environ['AIP_STORAGE_URI']
 else:
-    BUCKET = $BUCKET
+    BUCKET = '$BUCKET'
 
-model = keras.models.load_model('BUCKET')
+model = keras.models.load_model(BUCKET)
 
 
 @app.get('/')
