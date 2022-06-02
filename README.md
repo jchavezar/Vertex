@@ -280,7 +280,7 @@ curl -X POST -H "Content-Type: application/json" http://localhost:732/predict -d
 Push image to Google Cloud Artifacts Repository
 
 ```
-docker push $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test .
+docker push $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test
 ```
 
 ---
