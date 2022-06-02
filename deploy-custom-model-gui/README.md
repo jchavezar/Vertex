@@ -51,6 +51,7 @@ cat << EOF > custom/setup.cfg
 
 tag_build =
 tag_date = 0
+EOF
 ```
 
 ```python
@@ -62,6 +63,7 @@ setuptools.setup(
         'tensorflow==2.3.0',
     ],
     packages=setuptools.find_packages())
+EOF
 ```
 
 ```ruby
@@ -77,6 +79,7 @@ Author-email: jesusc@google.com
 License: Public
 Description: Demo
 Platform: Vertex
+EOF
 ```
 
 ```ruby
