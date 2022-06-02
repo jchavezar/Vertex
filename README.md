@@ -222,7 +222,7 @@ app = FastAPI()
 if os.environ.get('AIP_STORAGE_URI') is not None:
     BUCKET = os.environ['AIP_STORAGE_URI']
 else:
-    BUCKET = 'gs://vertexlooker-central/mpg/model'
+    BUCKET = '$BUCKET_FOLDER_ARTIFACTS'
 print(BUCKET)
 
 model = keras.models.load_model(BUCKET)
@@ -230,7 +230,7 @@ model = keras.models.load_model(BUCKET)
 
 @app.get('/')
 def get_root():
-    return {'message': 'Welcome to the spam detection API: miles per gallon prediction'}
+    return {'message': 'Welcome mpg API: miles per gallon prediction'}
 
 
 @app.get('/health_check')
