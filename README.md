@@ -32,6 +32,10 @@ This will generate a json config file with temporary credentials under: ~/.confi
 
 ## Step 1: Building training code, container and run it locally.
 
+| Local |
+:------------------:
+![](./architectures/vertex-custom-deploy-local.svg)
+
 Set your variables:
 
 ```
