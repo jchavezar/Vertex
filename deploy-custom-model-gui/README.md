@@ -21,13 +21,7 @@ Just [login](https://console.cloud.google.com/) to GCP.
 ## Set your variables:
 
 ```shell
-REGION=something                                                              # No spaces around the operator
-PROJECT_ID=something                                                          # Project id syntaxis
-BUCKET=something                                                              # Bucket id in the following format: gs://NAME
-BUCKET_FOLDER_ARTIFACTS=$BUCKET/something                                     # Folders name
-USERNAME=something                                                            # Container image name 
-IMAGE_URI=$REGION-docker.pkg.dev/$PROJECT_ID/repo-models/something                
-ADC=/home/$USERNAME/.config/gcloud/application_default_credentials.json
+BUCKET_NAME=something                                                              # Bucket id in the following format: gs://NAME
 ```
 
 ## Step 1: Package Assemly.
