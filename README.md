@@ -187,20 +187,19 @@ EOF
 ### Create code (logic) behind the webserver
 
 ```
-if [ ! -d app ]; then
-   mkdir app;
-fi
-```
-
-```
-cat << EOF > app/main.py
 from fastapi import Request, FastAPI
 from tensorflow import keras
 import json
 import os
 
 app = FastAPI()
-model = keras.models.load_model('$BUCKET')
+
+if os.environ.get('AIP_STORAGE_URI') is not None:
+    BUCKET = os.environ['AIP_STORAGE_URI']
+else:
+    BUCKET = $BUCKET
+
+model = keras.models.load_model('BUCKET')
 
 
 @app.get('/')
@@ -229,7 +228,7 @@ async def predict(request: Request):
     print("----------------- OUTPUTS -----------------")
 
     return {"predictions": response}
-EOF
+
 ```
 
 ### Create a new repository in Google Cloud Platform to store containers.
