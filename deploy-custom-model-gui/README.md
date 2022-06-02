@@ -18,6 +18,17 @@ You can:
 
 Just [login](https://console.cloud.google.com/) to GCP.
 
+## Set your variables:
+
+```shell
+REGION=something                                                              # No spaces around the operator
+PROJECT_ID=something                                                          # Project id syntaxis
+BUCKET=something                                                              # Bucket id in the following format: gs://NAME
+BUCKET_FOLDER_ARTIFACTS=$BUCKET/something                                     # Folders name
+USERNAME=something                                                            # Container image name 
+IMAGE_URI=$REGION-docker.pkg.dev/$PROJECT_ID/repo-models/something                
+ADC=/home/$USERNAME/.config/gcloud/application_default_credentials.json
+```
 
 ## Step 1: Package Assemly.
 
@@ -92,56 +103,7 @@ fi
 touch custom/trainer/__init__.py
 ```
 
-
-### Set your variables:
-
-```shell
-REGION=something                                                              # No spaces around the operator
-PROJECT_ID=something                                                          # Project id syntaxis
-BUCKET=something                                                              # Bucket id in the following format: gs://NAME
-BUCKET_FOLDER_ARTIFACTS=$BUCKET/something                                     # Folders name
-USERNAME=something                                                            # Container image name 
-IMAGE_URI=$REGION-docker.pkg.dev/$PROJECT_ID/repo-models/something                
-ADC=/home/$USERNAME/.config/gcloud/application_default_credentials.json
-```
-
-### Create your bucket:
-
-```ruby
-gsutil mb -l $REGION $BUCKET
-```
-
-### Create the folder structure:
-
-```ruby
-if [ ! -d train ]; then
-   mkdir train;
-fi
-cd train
-```
-
-### Create docker file (DockerFile):
-
-```Dockerfile
-cat << EOF > Dockerfile
-FROM gcr.io/deeplearning-platform-release/tf2-cpu.2-6
-WORKDIR /
-
-# Copies the trainer code to the docker image.
-COPY trainer /trainer
-
-# Sets up the entry point to invoke the trainer.
-ENTRYPOINT ["python", "-m", "trainer.train"]
-EOF
-```
-
-### Create code for training (train.py):
-
-```ruby
-if [ ! -d trainer ]; then
-   mkdir trainer;
-fi
-```
+### Create training code:
 
 ```Python
 cat << EOF > trainer/train.py
@@ -153,10 +115,12 @@ warnings.filterwarnings('ignore')
 
 from tensorflow import keras
 from tensorflow.keras import layers
+import argparse
 
-print(tf.__version__)
-
-BUCKET = '$BUCKET_FOLDER_ARTIFACTS'
+parser = argparse.ArgumentParser()
+parser.add_argument('--model-dir', dest='model_dir',
+                    default=os.getenv('AIP_MODEL_DIR'), type=str, help='Model dir.')
+args = parser.parse_args()
 
 # Extraction process
 dataset = pd.read_csv('https://storage.googleapis.com/jchavezar-public-datasets/auto-mpg.csv')
@@ -211,216 +175,18 @@ early_history = model.fit(normed_train_data, train_labels,
                           callbacks=[early_stop])
 
 # Export model and save to GCS
-print(BUCKET)
-model.save(BUCKET)
+print(args.model_dir)
+model.save(args.model_dir)
 EOF
 ```
 
-### Build model and run it:
+### Store training script on your Google Cloud Storage:
 
 ```ruby
-docker build -t train .
+rm -f customer.tar custom.tar.gz
+tar cvf custom.tar custom
+gzip custom.tar
+gsutil cp custom.tar.gz $BUCKET_NAME/trainer_iris.tar.gz
 ```
 
-```ruby
-docker run -ti --name train -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/temp.json -v ${ADC}:/tmp/temp.json train
-```
-
-
-> Your training has finished and model has been stored in $BUCKET_FOLDER_ARTIFACTS.
-
-<br />
-
-## Step 2: Building code, container and test them locally.
-
-### Preparing stage:
-
-```ruby
-cd ..
-if [ ! -d prediction ]; then
-   mkdir prediction;
-fi
-cd prediction
-```
-
-### Build a webserver docker container to handle predictions; uvicorn
-
-```Dockerfile
-cat << EOF > Dockerfile
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
-
-COPY app /app
-WORKDIR /app
-RUN pip install sklearn joblib pandas tensorflow
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
-
-EXPOSE 8080
-EOF
-```
-
-### Create code (logic) behind the webserver
-
-```ruby
-if [ ! -d app ]; then
-   mkdir app;
-fi
-
-```
-
-```Python
-cat << EOF > app/main.py
-from fastapi import Request, FastAPI
-from tensorflow import keras
-import json
-import os
-
-app = FastAPI()
-
-if os.environ.get('AIP_STORAGE_URI') is not None:
-    BUCKET = os.environ['AIP_STORAGE_URI']
-else:
-    BUCKET = '$BUCKET_FOLDER_ARTIFACTS'
-print(BUCKET)
-
-model = keras.models.load_model(BUCKET)
-
-
-@app.get('/')
-def get_root():
-    return {'message': 'Welcome mpg API: miles per gallon prediction'}
-
-
-@app.get('/health_check')
-def health():
-    return 200
-
-
-if os.environ.get('AIP_PREDICT_ROUTE') is not None:
-    method = os.environ['AIP_PREDICT_ROUTE']
-else:
-    method = '/predict'
-
-print(method)
-@app.post(method)
-async def predict(request: Request):
-    print("----------------- PREDICTING -----------------")
-    body = await request.json()
-    instances = body["instances"]
-    outputs = model.predict(instances)
-    response = outputs.tolist()
-    print("----------------- OUTPUTS -----------------")
-
-    return {"predictions": response}
-EOF
-```
-
-### Create a new repository in Google Cloud Platform to store containers.
-
-```ruby
-gcloud artifacts repositories create repo-models --repository-format=docker \
---location=$REGION --description="Models repository"
-```
-
-### Tag container in Artifacts repository format:
-```ruby
-docker build -t $IMAGE_URI .
-```
-
-### Run the container locally:
-```ruby
-docker run --name predict \
-  -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/FILE_NAME.json \
-  -v ${ADC}:/tmp/keys/FILE_NAME.json \
-  -p 732:8080 $IMAGE_URI
-```
-
-You can break it down with Ctrl+C.
-
-For predictions, open a new terminal an make an http request with the data in json format:
-
-```ruby
-curl -X POST -H "Content-Type: application/json" http://localhost:732/predict -d '{
- "instances": [[1.4838871833555929,
- 1.8659883497083019,
- 2.234620276849616,
- 1.0187816540094903,
- -2.530890710602246,
- -1.6046416850441676,
- -0.4651483719733302,
- -0.4952254087173721,
- 0.7746763768735953]]
-}'
-```
-
-### Push image to Google Cloud Artifacts Repository
-
-```ruby
-docker push $IMAGE_URI
-```
-
----
-
-## Step 3: Upload and deploy it on Vertex Endpoints.
-
-| Google Cloud |
-:------------------:
-![](./architectures/vertex-custom-deploy-gcp.png)
-
-### Define Variables
-
-```shell
-ENDPOINT_NAME=something               # Endpoint's name
-MODEL_NAME=something                  # Model's name
-DEPLOYED_MODEL_NAME=something         # Deployed model's name
-MACHINE_TYPE=n1-standard-2            # Machine type [more types](https://cloud.google.com/vertex-ai/docs/predictions/configure-compute)
-```
-
-### Upload Model
-
-```ruby
-gcloud ai models upload \
-  --region=$REGION \
-  --display-name=$MODEL_NAME \
-  --container-image-uri=$IMAGE_URI \
-  --container-ports=8080 \
-  --container-health-route=/health_check \
-  --artifact-uri=$BUCKET_FOLDER_ARTIFACTS
-```
-
-### Create Endpoint
-
-```ruby
-gcloud ai endpoints create \
-  --display-name=$ENDPOINT_NAME \
-  --region=$REGION
-```
-
-### List Model and Endpoint
-
-```
-MODEL_ID=$(gcloud ai models list \
-  --region=$REGION \
-  --filter=displayName:$MODEL_NAME \
-  --format='value(name)')
-```
-
-```
-ENDPOINT_ID=$(gcloud ai endpoints list \
-  --region=$REGION \
-  --filter=displayName:$ENDPOINT_NAME \
-  --format='value(name)')
-```
-
-### Deploy Endpoint
-
-```ruby
-gcloud ai endpoints deploy-model $ENDPOINT_ID\
-  --region=$REGION \
-  --model=$MODEL_ID \
-  --display-name=$DEPLOYED_MODEL_NAME \
-  --machine-type=$MACHINE_TYPE \
-  --min-replica-count=1 \
-  --max-replica-count=1 \
-  --traffic-split=0=100
-```
-
+## Step 2: Train in Vertex Training.
