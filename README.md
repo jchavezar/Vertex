@@ -243,7 +243,7 @@ if os.environ.get('AIP_PREDICT_ROUTE') is not None:
 else:
     method = '/predict'
 
-
+print(method)
 @app.post(method)
 async def predict(request: Request):
     print("----------------- PREDICTING -----------------")
