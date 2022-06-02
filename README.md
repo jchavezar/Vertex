@@ -34,7 +34,7 @@ This will generate a json config file with temporary credentials under: ~/.confi
 
 | Local |
 :------------------:
-![](./architectures/vertex-custom-deploy-local.svg)
+![](./architectures/vertex-custom-deploy-local.png)
 
 Set your variables:
 
