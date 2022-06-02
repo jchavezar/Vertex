@@ -52,7 +52,7 @@ ADC=/home/$USERNAME/.config/gcloud/application_default_credentials.json
 ### Create your bucket:
 
 ```
-gcloud mb -l $REGION $BUCKET
+gsutil mb -l $REGION $BUCKET
 ```
 
 ### Create the folder structure:
