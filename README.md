@@ -303,6 +303,10 @@ docker push $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test
 
 ## Step 3: Upload and deploy it on Vertex Endpoints.
 
+| Google Cloud |
+:------------------:
+![](./architectures/vertex-custom-deploy-gcp.png)
+
 ### Define Variables
 
 ```
