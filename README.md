@@ -298,7 +298,7 @@ curl -X POST -H "Content-Type: application/json" http://localhost:732/predict -d
 
 ### Push image to Google Cloud Artifacts Repository
 
-```
+```ruby
 docker push $IMAGE_URI
 ```
 
