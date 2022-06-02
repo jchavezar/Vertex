@@ -204,7 +204,8 @@ app = FastAPI()
 if os.environ.get('AIP_STORAGE_URI') is not None:
     BUCKET = os.environ['AIP_STORAGE_URI']
 else:
-    BUCKET = '$BUCKET'
+    BUCKET = 'gs://vertexlooker-central/mpg/model'
+print(BUCKET)
 
 model = keras.models.load_model(BUCKET)
 
@@ -274,6 +275,12 @@ curl -X POST -H "Content-Type: application/json" http://localhost:732/predict -d
  -0.4952254087173721,
  0.7746763768735953]]
 }'
+```
+
+Push image to Google Cloud Artifacts Repository
+
+```
+gcloud push $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test .
 ```
 
 ---
