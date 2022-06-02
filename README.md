@@ -294,7 +294,7 @@ ENDPOINT_NAME=[your_endpoint_name]
 MODEL_NAME=[your_model_name]
 IMAGE_URI=$REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test
 DEPLOYED_MODEL_NAME=[your_deployed_model_name]
-MACHINE_TYPE=n2-standard-2
+MACHINE_TYPE=n1-standard-2
 ```
 
 ### Upload Model
