@@ -40,12 +40,12 @@ This will generate a json config file with temporary credentials under: ~/.confi
 ### Set your variables:
 
 ```shell
-REGION="string"                                                                   # No spaces around the operator
-PROJECT_ID="string"                                                               # Project id syntaxis
-BUCKET="string"                                                                   # Bucket id in the following format: gs://NAME
-BUCKET_FOLDER_ARTIFACTS=$BUCKET/"string"                                          # Folders name
-USERNAME="string"                                                                 # Container image name 
-IMAGE_URI=$REGION-docker.pkg.dev/$PROJECT_ID/repo-models/"string"                 
+REGION=something                                                              # No spaces around the operator
+PROJECT_ID=something                                                          # Project id syntaxis
+BUCKET=something                                                              # Bucket id in the following format: gs://NAME
+BUCKET_FOLDER_ARTIFACTS=$BUCKET/something                                     # Folders name
+USERNAME=something                                                            # Container image name 
+IMAGE_URI=$REGION-docker.pkg.dev/$PROJECT_ID/repo-models/something                
 ADC=/home/$USERNAME/.config/gcloud/application_default_credentials.json
 ```
 
@@ -313,10 +313,10 @@ docker push $IMAGE_URI
 ### Define Variables
 
 ```shell
-ENDPOINT_NAME="string"               # Endpoint's name
-MODEL_NAME="string"                  # Model's name
-DEPLOYED_MODEL_NAME="string"         # Deployed model's name
-MACHINE_TYPE=n1-standard-2           # Machine type
+ENDPOINT_NAME=something               # Endpoint's name
+MODEL_NAME=something                  # Model's name
+DEPLOYED_MODEL_NAME=something         # Deployed model's name
+MACHINE_TYPE=n1-standard-2            # Machine type [more types](https://cloud.google.com/vertex-ai/docs/predictions/configure-compute)
 ```
 
 ### Upload Model
