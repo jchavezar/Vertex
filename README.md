@@ -34,9 +34,9 @@ This will generate a json config file with temporary credentials under: ~/.confi
 
 Set your variables:
 
-```
 <input type="text" id="name" name="name"/>
 
+```
 REGION=[your_region]
 PROJECT_ID=[your_project]
 BUCKET=[your_bucket]
