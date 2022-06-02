@@ -22,7 +22,7 @@ gcloud auth application-default login
 ```
 <details>
 <summary>"Click to expand (notes)"</summary>
-<br \>
+<br />
 This will generate a json config file with temporary credentials under: ~/.config/gcloud/, the container has to be able to mount that file through docker volumes, that's why we will define a variable called ADC.
 
 </details>
@@ -173,7 +173,7 @@ docker run -ti --name train -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/temp.json -v 
 
 > Your training has finished and model has been stored in $BUCKET_FOLDER_ARTIFACTS.
 
-\
+<br />
 
 ## Step 2: Building code, container and test them locally.
 
