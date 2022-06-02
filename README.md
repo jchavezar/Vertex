@@ -6,10 +6,9 @@
 
 You can:
 
-1. Use your own pc/laptop for locally testing.
-2. User any flavor of Vertex Workbench [here](https://console.cloud.google.com/vertex-ai/workbench).
-3. Upload and deploy it on Vertex Endpoints [here](https://console.cloud.google.com/vertex-ai/endpoints).
-4. Mix between 1.+3. or 2.+3.
+1. Building training code, container and run it locally.
+2. Building deployment code, container and test it locally.
+3. Upload and deploy it on Vertex Endpoints [here]
 
 ## Data Type
 
@@ -276,5 +275,26 @@ curl -X POST -H "Content-Type: application/json" http://localhost:732/predict -d
  0.7746763768735953]]
 }'
 ```
+
+---
+
+## Step 3: Upload and deploy it on Vertex Endpoints.
+
+### Define Variables
+
+```
+ENDPOINT_NAME=[your_endpoint_name]
+
+```
+
+### Create Endpoint
+
+```
+gcloud ai endpoints create 
+  --display-name=$ENDPOINT_NAME
+  --region=$REGION
+```
+
+
 
 
