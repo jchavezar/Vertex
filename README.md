@@ -284,7 +284,20 @@ curl -X POST -H "Content-Type: application/json" http://localhost:732/predict -d
 
 ```
 ENDPOINT_NAME=[your_endpoint_name]
+MODEL_NAME=[your_model_name]
+IMAGE_URI=$REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test
+DEPLOYED_MODEL_NAME=[your_deployed_model_name]
+MACHINE_TYPE=n2-standard-2
+```
 
+### Upload Model
+
+```
+gcloud ai models upload \
+  --region=$REGION \
+  --display-name=$MODEL_NAME \
+  --container-image-uri=$IMAGE_URI \
+  --artifact-uri=$BUCKET
 ```
 
 ### Create Endpoint
@@ -295,6 +308,32 @@ gcloud ai endpoints create \
   --region=$REGION
 ```
 
+### List Model and Endpoint
 
+```
+MODEL_ID=$(gcloud ai models list \
+  --region=$REGION \
+  --filter=displayName:$MODEL_NAME \
+  --format='value(name)')
+```
 
+```
+ENDPOINT_ID=$(gcloud ai endpoints list \
+  --region=$REGION \
+  --filter=displayName:$ENDPOINT_NAME \
+  --format='value(name)')
+```
+
+### Deploy Endpoint
+
+```
+gcloud ai endpoints deploy-model $ENDPOINT_ID\
+  --region=$REGION \
+  --model=$MODEL_ID \
+  --display-name=$DEPLOYED_MODEL_NAME \
+  --machine-type=$MACHINE_TYPE \
+  --min-replica-count=1 \
+  --max-replica-count=1 \
+  --traffic-split=0=100
+```
 
