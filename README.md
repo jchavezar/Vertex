@@ -12,9 +12,7 @@ You can:
 
 ## Data Type
 
-- request in json format ({'instances' : [1,2,3,4]})
-
----
+- http request in json format ({'instances' : [1,2,3,4]}) [more info](https://cloud.google.com/vertex-ai/docs/predictions/online-predictions-custom-models#formatting-prediction-input)
 
 ## Authentication
 
