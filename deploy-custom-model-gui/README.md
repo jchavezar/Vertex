@@ -92,6 +92,7 @@ cat << EOF > trainer/task.py
 import warnings
 import pandas as pd
 import tensorflow as tf
+import os
 
 warnings.filterwarnings('ignore')
 
