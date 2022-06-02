@@ -324,8 +324,10 @@ MACHINE_TYPE=n1-standard-2
 ```
 gcloud ai models upload \
   --region=$REGION \
-  --display-name=$MODEL_NAME \
+  --display-name=mpg-fromcontainer \
   --container-image-uri=$IMAGE_URI \
+  --container-ports=8080 \
+  --container-health-route=/health_check \
   --artifact-uri=$BUCKET_FOLDER_ARTIFACTS
 ```
 
