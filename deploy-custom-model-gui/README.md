@@ -44,14 +44,9 @@ Layout:
 
 ### Assemly the package:
 
-```ruby
-if [ ! -d custom ]; then
-   mkdir custom;
-fi
-```
 
 ```ruby
-cat << EOF > custom/setup.cfg
+cat << EOF > setup.cfg
 [egg_info]
 
 tag_build =
