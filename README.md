@@ -187,6 +187,14 @@ EOF
 ### Create code (logic) behind the webserver
 
 ```
+if [ ! -d app ]; then
+   mkdir app;
+fi
+
+```
+
+```
+cat << EOF > app/main.py
 from fastapi import Request, FastAPI
 from tensorflow import keras
 import json
@@ -228,7 +236,7 @@ async def predict(request: Request):
     print("----------------- OUTPUTS -----------------")
 
     return {"predictions": response}
-
+EOF
 ```
 
 ### Create a new repository in Google Cloud Platform to store containers.
