@@ -59,48 +59,41 @@ tag_date = 0
 EOF
 ```
 
-```python
-cat << EOF > custom/setup.py
-import setuptools
-
-setuptools.setup(
-    install_requires=[
-        'tensorflow==2.3.0',
-    ],
-    packages=setuptools.find_packages())
-EOF
-```
-
 ```ruby
-cat << EOF > custom/PKG-INFO
-Metadata-Version: 1.0
-
-Name: Miles per galon classification
-Version: 0.0.0
-Summary: Demostration training script
-Home-page: www.google.com
-Author: Google
-Author-email: jesusc@google.com
-License: Public
-Description: Demo
-Platform: Vertex
-EOF
-```
-
-```ruby
-if [ ! -d custom/trainer ]; then
-   mkdir custom/trainer;
+if [ ! -d trainer ]; then
+   mkdir trainer;
 fi
 ```
 
 ```ruby
-touch custom/trainer/__init__.py
+touch trainer/__init__.py
+touch trainer/task.py
+```
+
+```python
+cat << EOF > setup.py
+from setuptools import find_packages
+from setuptools import setup
+
+REQUIRED_PACKAGES = [
+    'tensorflow==2.3.0', 
+]
+ 
+setup(
+    name='trainer', 
+    version='0.1', 
+    install_requires=REQUIRED_PACKAGES,
+    packages=find_packages(), # Automatically find packages within this directory or below.
+    include_package_data=True, # if packages include any data files, those will be packed together.
+    description='Regression to predict miles per gallon of fuel'
+)
+EOF
 ```
 
 ### Create training code:
 
 ```Python
-cat << EOF > custom/trainer/train.py
+cat << EOF > trainer/task.py
 import warnings
 import pandas as pd
 import tensorflow as tf
@@ -177,10 +170,10 @@ EOF
 ### Store training script on your Google Cloud Storage:
 
 ```ruby
-rm -f customer.tar custom.tar.gz
-tar cvf custom.tar custom
-gzip custom.tar
-gsutil cp custom.tar.gz $BUCKET_NAME/trainer_iris.tar.gz
+pip install setuptools
+python setup.py install
+python setup.py sdist
+gsutil cp dist/trainer-01.tar.gz $BUCKET_NAME/trainer_01.tar.gz
 ```
 
-## Step 2: Train in Vertex Training.
+## Step 2: Train in Vertex Training
