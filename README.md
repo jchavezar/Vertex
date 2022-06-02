@@ -42,6 +42,14 @@ USERNAME=[linux_unix_username]
 ADC=/home/$USERNAME/.config/gcloud/application_default_credentials.json
 ```
 
+### Create your bucket:
+
+```
+gcloud mb -l $REGION $BUCKET
+```
+
+### Create the folder structure:
+
 ```
 if [ ! -d train ]; then
    mkdir train;
@@ -63,6 +71,7 @@ COPY trainer /trainer
 ENTRYPOINT ["python", "-m", "trainer.train"]
 EOF
 ```
+
 ### Create code for training (train.py):
 
 ```
@@ -279,7 +288,7 @@ curl -X POST -H "Content-Type: application/json" http://localhost:732/predict -d
 }'
 ```
 
-Push image to Google Cloud Artifacts Repository
+### Push image to Google Cloud Artifacts Repository
 
 ```
 docker push $REGION-docker.pkg.dev/$PROJECT_ID/repo-models/container_model_test
