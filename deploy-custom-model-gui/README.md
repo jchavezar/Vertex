@@ -100,7 +100,7 @@ touch custom/trainer/__init__.py
 ### Create training code:
 
 ```Python
-cat << EOF > trainer/train.py
+cat << EOF > custom/trainer/train.py
 import warnings
 import pandas as pd
 import tensorflow as tf
