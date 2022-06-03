@@ -173,3 +173,20 @@ gsutil cp dist/trainer-0.1.tar.gz $BUCKET_NAME/trainer-0.1.tar.gz
 ```
 
 ## Step 2: Train in Vertex Training
+
+Once you defined and assembled the code it can be used by pre-built containers on Vertex to avoid creating containers from scracth, there are 3 ways to do it: gui (console), sdk or programming language.
+
+Pre-built containers available are specified [here](https://cloud.google.com/vertex-ai/docs/training/pre-built-containers), but in general they are 4:
+
+- PyTorch
+- scikit-learn
+- TensorFlow
+- XGBoost
+
+*You also have the option to build your own container.*
+
+### Train data with Vertex AI
+
+Go to Vertex AI > Training > Create
+
+[images/training_method_1.png](training method), sdfdsf
