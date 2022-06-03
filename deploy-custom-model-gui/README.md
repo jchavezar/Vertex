@@ -193,3 +193,46 @@ Go to Vertex AI > Training > Create
 :------------------:
 ![](./images/training_method_1.png)
 
+
+1. This sections is for selecting a vertex dataset (in this case select "No managed dataset"). [info](https://cloud.google.com/vertex-ai/docs/training/using-managed-datasets)
+2. Select Custom Training (AutoML looks at the best model and hyperparameters taiolred to your business need) [info](https://cloud.google.com/automl/docs)
+
+| Model Details |
+:------------------:
+![](./images/model_details_1.png)
+
+3. Write a name for the model.
+
+
+| Training Container Specs 1 |
+:------------------:
+![](./images/training_container_1.png)
+
+4. In this case select pre-built (you can always train your data with your own container). 
+5. Select the framework for pre-built. [available frameworks](https://cloud.google.com/vertex-ai/docs/training/pre-built-containers)
+6. Select the version of the framework.
+7. Select the package location for trainer-0.1.tar.gz (you should get it from step 1).
+
+| Training Container Specs 2 |
+:------------------:
+![](./images/training_container_2.png)
+
+8. Write the module for the training, on step 1 you should've saved the code as /trainer/task.py = trainer.task
+
+| Compute and Pricing |
+:------------------:
+![](./images/compute_and_pricing_1.png)
+
+9. Select a machine type for the worker pools you can have up to 4 worker pools and map your ML frameworks to different pools.
+
+| Prediction Container |
+:------------------:
+![](./images/prediction_container_1.png)
+
+10. Select pre-built container for predictions. Frameworks available [here](https://cloud.google.com/vertex-ai/docs/predictions/pre-built-containers)
+
+11. Select Framework (Tensorflow).
+12. Select the Version (2.3).
+13. Select the Model Directory.
+
+Hit on training.
