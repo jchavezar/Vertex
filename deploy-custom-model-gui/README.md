@@ -269,3 +269,14 @@ Clink on the training name and deploy model:
 2. Choose traffic split (if you have multiple model versions), and select the machine type (size).
 
 Hit on deploy.
+
+
+
+### Test your model!
+
+| Test Model |
+:------------------:
+![](./images/predict.png)
+
+
+Enjoy!
