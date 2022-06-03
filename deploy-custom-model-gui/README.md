@@ -189,4 +189,7 @@ Pre-built containers available are specified [here](https://cloud.google.com/ver
 
 Go to Vertex AI > Training > Create
 
-[images/training_method_1.png](training method), sdfdsf
+| Choosing Training Method |
+:------------------:
+![](./images/training_method_1.png)
+
