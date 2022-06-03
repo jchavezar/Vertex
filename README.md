@@ -33,7 +33,7 @@ This will generate a json config file with temporary credentials under: ~/.confi
 
 | Local |
 :------------------:
-![](./architectures/vertex-custom-deploy-local.png)
+![](./deplopy-custom-model-sdk/architectures/vertex-custom-deploy-local.png)
 
 
 
@@ -308,7 +308,7 @@ docker push $IMAGE_URI
 
 | Google Cloud |
 :------------------:
-![](./architectures/vertex-custom-deploy-gcp.png)
+![](./deplopy-custom-model-sdk/architectures/vertex-custom-deploy-gcp.png)
 
 ### Define Variables
 
