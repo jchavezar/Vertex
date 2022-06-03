@@ -236,3 +236,36 @@ Go to Vertex AI > Training > Create
 13. Select the Model Directory.
 
 Hit on training.
+
+After some minutes, you should see the model under training like this:
+
+| Result |
+:------------------:
+![](./images/training_pipelines_after.png)
+
+
+Clink on the training name and deploy model:
+
+
+| Deploy to Endpoint |
+:------------------:
+![](./images/deploy_to_endpoint.png)
+
+
+### Model Deployment
+
+
+| Define your endpoint |
+:------------------:
+![](./images/define_your_endpoint.png)
+
+1. Write a name for your endpoint (1 endpoint can have multiple versions of models).
+
+
+| Model Setting |
+:------------------:
+![](./images/model_settings.png)
+
+2. Choose traffic split (if you have multiple model versions), and select the machine type (size).
+
+Hit on deploy.
