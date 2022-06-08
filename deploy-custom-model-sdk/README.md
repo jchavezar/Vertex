@@ -372,7 +372,7 @@ gcloud ai endpoints deploy-model $ENDPOINT_ID\
 
 | Test Model |
 :------------------:
-![](./images/predict.png)
+![](../deploy-custom-model-gui/images/predict.png)
 
 
 Enjoy!
