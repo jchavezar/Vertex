@@ -57,6 +57,19 @@ gsutil mb -l $REGION $BUCKET
 
 ### Create the folder structure:
 
+    .
+    ├── ..
+    ├── prediction                    # Main folder for prediction
+    │   ├── Dockerfile                # Declarative file to build the container
+    │   ├── app                       # Workdir or folder for code
+    │       ├── main.py               # Code for web serving handler and predictions
+    ├── train                         # Main folder for training
+    │   ├── Dockerfile                # Declarative file to build the container
+    │   ├── trainer                   # Workdir or Folder for training
+    │       ├── train.py              # Code for training
+    └── ...
+
+
 ```ruby
 if [ ! -d train ]; then
    mkdir train;
