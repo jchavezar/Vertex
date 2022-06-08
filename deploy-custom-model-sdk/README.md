@@ -368,3 +368,12 @@ gcloud ai endpoints deploy-model $ENDPOINT_ID\
   --traffic-split=0=100
 ```
 
+### Test your model!
+
+| Test Model |
+:------------------:
+![](./images/predict.png)
+
+
+Enjoy!
+
